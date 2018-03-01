@@ -6,6 +6,8 @@ from __future__ import print_function
 
 import logging
 
+from django.db.models import Q
+
 from . import compiler
 
 __author__ = 'Steven Klass'
@@ -49,14 +51,15 @@ class AdvancedSearchDataTable(object):
                 columns[name] = self.columns[name]
 
         # Global search terms apply to all columns
+        q = None
         try:
             q = self._parse_advanced_search_string(self.config['search'])
-            log.debug("Found: %d", queryset.filter(q).distinct().count())
-            return queryset.filter(q).distinct()
+            if q is not None:
+                return queryset.filter(Q(q))
         except TypeError as err:
-            log.warning("Type Error: %s", err)
-            # search failed and returned none
-            pass
+            if self.config['search'] is not None:
+                if q is not None:
+                    log.warning("Type Error: %s", err)
         except KeyError as err:
             log.info("Falling back to standard search - %s", err)
             for term in set(split_terms(self.config['search'])):
@@ -83,12 +86,6 @@ class AdvancedSearchDataTable(object):
 
         return queryset.distinct()
 
-    def parse_jira_search_string(self, search_string):
-        try:
-            self._parse_advanced_search_string(search_string)
-        except:
-            raise KeyError("Unable to parse %r" % search_string)
-
     def _parse_advanced_search_string(self, search_string):
 
         try:
@@ -97,5 +94,6 @@ class AdvancedSearchDataTable(object):
         except Exception as err:
             log.error("Unable to parse: %s", err)
             raise KeyError(err)
+        log.debug(type(query))
         return query
 

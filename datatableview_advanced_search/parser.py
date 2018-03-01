@@ -59,13 +59,12 @@ class AdvancedSearchParser(object):
         for source in sources:
             if lookup:
                 source = '%s__%s' % (source, lookup)
-            query.append(Q({str((source)): p[3]}))
+                query.append(Q(**{str((source)): p[3]}))
 
         if len(query) > 1:
             p[0] = reduce(operator.or_, query)
         else:
             p[0] = query[0]
-
 
     def p_expression_in(self, p):
         """expression : variable IN list"""
@@ -79,7 +78,7 @@ class AdvancedSearchParser(object):
         query = []
         for source in sources:
             source = '%s__in' % (source)
-            query.append(Q({str((source)): p[3]}))
+            query.append(Q(**{str((source)): p[3]}))
 
         if len(query) > 1:
             p[0] = reduce(operator.or_, query)
