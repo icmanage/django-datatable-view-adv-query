@@ -1,3 +1,10 @@
 /*
  * Datatables advanced search
  */
+div.dataTables_wrapper div.dataTables_filter label {
+    display: inline;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+    width: 80%;
+}
