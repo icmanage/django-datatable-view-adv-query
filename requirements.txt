@@ -1,0 +1,4 @@
+nose
+sphinx
+django-datatable-view
+ply

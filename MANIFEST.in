@@ -1,0 +1,2 @@
+recursive-include datatableview_advanced_search/templates *
+recursive-include datatableview_advanced_search/static *
