@@ -8,6 +8,8 @@ import logging
 
 import sys
 
+import operator
+
 from lexer import AdvancedSearchLexer
 import ply.yacc as yacc
 
@@ -44,29 +46,45 @@ class AdvancedSearchParser(object):
     def p_expression_compare(self, p):
         """expression : variable COMPARE value"""
 
-        lookup = compa2lookup[p[2]]
-
-        field = p[1]
-
-        if lookup:
-            field = '%s__%s' % (field, lookup)
-
-        # In some situations (which ones?), python
-        # refuses unicode strings as dict keys for
-        # Q(**d)
-        field = str(field)
-
-        d = {field: p[3]}
+        allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ "
+        field = "".join([x.lower() if x != " " else "_" for x in p[1].lower() if x in allowed])
+        sources = self.name_map.get(field, [p[1]])
+        if not isinstance(sources, list):
+            sources = [sources]
 
         from django.db.models import Q
-        p[0] = Q(**d)
+
+        lookup = compa2lookup[p[2]]
+        query = []
+        for source in sources:
+            if lookup:
+                source = '%s__%s' % (source, lookup)
+            query.append(Q({str((source)): p[3]}))
+
+        if len(query) > 1:
+            p[0] = reduce(operator.or_, query)
+        else:
+            p[0] = query[0]
 
 
     def p_expression_in(self, p):
         """expression : variable IN list"""
         from django.db.models import Q
-        p[0] = Q({str('%s__in' % (p[1])): p[3]})
+        allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ "
+        field = "".join([x.lower() if x != " " else "_" for x in p[1].lower() if x in allowed])
+        sources = self.name_map.get(field, [p[1]])
+        if not isinstance(sources, list):
+            sources = [sources]
 
+        query = []
+        for source in sources:
+            source = '%s__in' % (source)
+            query.append(Q({str((source)): p[3]}))
+
+        if len(query) > 1:
+            p[0] = reduce(operator.or_, query)
+        else:
+            p[0] = query[0]
 
     def p_list(self, p):
         """list : LBRACK list_vals RBRACK"""
@@ -151,7 +169,9 @@ def main(args):
     (foo='bar\'s' AND x=1) OR (ya IN [2, 3, -3.5]) AND datestamp >= 1/25/2018 AND X="THe OTH3R"
     '''
 
-    m = AdvancedSearchParser()
+    name_map = {'foo': ['foo__name', 'foo__id']}
+
+    m = AdvancedSearchParser(name_map=name_map)
     print(m.parse(data)) # Test it
 
 

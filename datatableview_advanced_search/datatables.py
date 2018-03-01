@@ -19,6 +19,15 @@ log = logging.getLogger(__name__)
 class AdvancedSearchDataTable(object):
     """This allows us to use a JIRA like search query"""
 
+    def get_table_map(self):
+        """Returns a dictionary of name : model_search_fields"""
+        data = {}
+        allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ "
+        for _, column in self.columns.items():
+            label = "".join([x.lower() if x != " " else "_" for x in column.label.lower() if x in allowed])
+            data[label] = column.sources
+        return data
+
     def normalize_config_search(self, config, query_config):
         from datatableview.utils import OPTION_NAME_MAP
         return query_config.get(OPTION_NAME_MAP['search'], '').strip()
@@ -80,11 +89,10 @@ class AdvancedSearchDataTable(object):
         except:
             raise KeyError("Unable to parse %r" % search_string)
 
-    @classmethod
-    def _parse_advanced_search_string(cls, search_string):
+    def _parse_advanced_search_string(self, search_string):
 
         try:
-            query = compiler(search_string)
+            query = compiler(search_string, name_map=self.get_table_map())
             log.debug("Search %s >> %s", search_string, query)
         except Exception as err:
             log.error("Unable to parse: %s", err)

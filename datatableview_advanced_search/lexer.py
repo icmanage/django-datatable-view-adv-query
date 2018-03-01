@@ -98,13 +98,15 @@ class AdvancedSearchLexer(object):
         t.lexer.skip(1)
 
     # Test it output
-    def test(self, data):
+    def test(self, data, print_output=True):
         self.lexer.input(data)
         while True:
             tok = self.lexer.token()
             if not tok:
                 break
-            print(tok)
+            if print_output:
+                print(tok)
+        return True
 
 
 def main(args):
