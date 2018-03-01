@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 
 from lexer import AdvancedSearchLexer
-import parser
+from parser import AdvancedSearchParser
 
 __author__ = 'Steven Klass'
 __version_info__ = (0, 0, 0)
@@ -16,9 +16,6 @@ __credits__ = ['Steven Klass', ]
 __license__ = 'See the file LICENSE.txt for licensing information.'
 
 
-def compiler(expression, debug=False, log=None):
-    adv_lexer = AdvancedSearchLexer()
-    adv_lexer.build()
-
-    adv_parser = parser.adv_search_yacc(module=parser, debug=debug, debuglog=log)
-    return adv_parser.parse(expression, lexer=adv_lexer.lexer)
+def compiler(expression, name_map=None, debug=False, log=None):
+    adv_parser = AdvancedSearchParser(name_map=name_map, debug=debug, debuglog=log)
+    return adv_parser.parse(expression)

@@ -37,6 +37,12 @@ class AdvancedSearchLexer(object):
     t_LPAREN = r'\('
     t_RPAREN = r'\)'
 
+    def __init__(self, **kwargs):
+        self.lexer = lex.lex(module=self, **kwargs)
+        self.lexer.linestart = 0
+
+    def __iter__(self):
+        return iter(self.lexer)
 
     # dates are in the following format: /mm/dd/yyyy
     def t_DATE(self, t):
@@ -91,10 +97,6 @@ class AdvancedSearchLexer(object):
         print("Illegal character '%s'" % t.value[0])
         t.lexer.skip(1)
 
-    # Build the lexer
-    def build(self, **kwargs):
-        self.lexer = lex.lex(module=self, **kwargs)
-
     # Test it output
     def test(self, data):
         self.lexer.input(data)
@@ -117,13 +119,10 @@ def main(args):
     '''
 
     m = AdvancedSearchLexer()
-    m.build()  # Build the lexer
     m.test(data)  # Test it
 
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="$<description>$")
-    parser.add_argument('-v', dest='verbose', help="How verbose of the output",
-                        action='append_const', const=1, default=[1, 2, 3])
     sys.exit(main(parser.parse_args()))
