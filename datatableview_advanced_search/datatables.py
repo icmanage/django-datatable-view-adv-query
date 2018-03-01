@@ -6,6 +6,7 @@ from __future__ import print_function
 
 import logging
 
+from django.core.exceptions import FieldError
 from django.db.models import Q
 
 from . import compiler
@@ -55,7 +56,9 @@ class AdvancedSearchDataTable(object):
         try:
             q = self._parse_advanced_search_string(self.config['search'])
             if q is not None:
-                return queryset.filter(Q(q))
+                return queryset.filter(q)
+        except FieldError as err:
+            log.debug(err)
         except TypeError as err:
             if self.config['search'] is not None:
                 if q is not None:
