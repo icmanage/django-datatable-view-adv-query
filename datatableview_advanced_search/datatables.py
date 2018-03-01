@@ -5,12 +5,8 @@ from __future__ import unicode_literals
 from __future__ import print_function
 
 import logging
-from collections import OrderedDict
 
-from datatableview import datatables
-from django.core.urlresolvers import reverse
-
-from .models import DataTableUserColumns
+from . import compiler
 
 __author__ = 'Steven Klass'
 __date__ = '3/1/18 9:22 AM'
@@ -45,7 +41,13 @@ class AdvancedSearchDataTable(object):
 
         # Global search terms apply to all columns
         try:
-            self.parse_jira_search_string(self.config['search'])
+            q = self._parse_advanced_search_string(self.config['search'])
+            log.debug("Found: %d", queryset.filter(q).distinct().count())
+            return queryset.filter(q).distinct()
+        except TypeError as err:
+            log.warning("Type Error: %s", err)
+            # search failed and returned none
+            pass
         except KeyError as err:
             log.info("Falling back to standard search - %s", err)
             for term in set(split_terms(self.config['search'])):
@@ -74,11 +76,18 @@ class AdvancedSearchDataTable(object):
 
     def parse_jira_search_string(self, search_string):
         try:
-            self._parse_jira_search_string(search_string)
+            self._parse_advanced_search_string(search_string)
         except:
             raise KeyError("Unable to parse %r" % search_string)
 
     @classmethod
-    def _parse_jira_search_string(cls, search_string):
-        raise SystemError('Crap')
+    def _parse_advanced_search_string(cls, search_string):
+
+        try:
+            query = compiler(search_string)
+            log.debug("Search %s >> %s", search_string, query)
+        except Exception as err:
+            log.error("Unable to parse: %s", err)
+            raise KeyError(err)
+        return query
 

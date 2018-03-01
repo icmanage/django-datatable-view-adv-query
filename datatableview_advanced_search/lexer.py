@@ -59,19 +59,19 @@ def t_INT(t):
 
 
 def t_SINGLE_QUOTE_WORD(t):
-    r"(')(?P<word>[a-zA-Z[a-zA-Z_0-9\\'\" ]*)(')"
+    r"(')(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\'\" ]*)(')"
     t.value = t.lexer.lexmatch.group('word')
     return t
 
 
 def t_DOUBLE_QUOTE_WORD(t):
-    r'(")(?P<word>[a-zA-Z][a-zA-Z_0-9\\"\' ]*)(")'
+    r'(")(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\"\' ]*)(")'
     t.value = t.lexer.lexmatch.group('word')
     return t
 
 
 def t_WORD(t):
-    r'[a-zA-Z][a-zA-Z_0-9]*'
+    r'[a-zA-Z_0-9][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value, 'WORD')  # Check for reserved words
     return t
 
