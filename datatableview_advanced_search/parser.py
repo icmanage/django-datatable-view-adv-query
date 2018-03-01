@@ -16,7 +16,7 @@ __credits__ = ['Steven Klass', ]
 
 log = logging.getLogger(__name__)
 
-tokens = lexer.tokens
+tokens = lexer.AdvancedSearchLexer.tokens
 
 compa2lookup = {
     '=': 'exact',

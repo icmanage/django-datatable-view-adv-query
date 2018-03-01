@@ -25,96 +25,105 @@ reserved = {
     'NOT': 'NOT'
 }
 
-tokens = ['WORD', 'SINGLE_QUOTE_WORD', 'DOUBLE_QUOTE_WORD', 'DATE', 'FLOAT', 'INT',
-          'COMPARE', 'LBRACK', 'RBRACK', 'COMMA', 'LPAREN', 'RPAREN'] + reserved.values()
+class AdvancedSearchLexer(object):
 
-t_COMPARE = r'!?=|[<>]=?|~='
-t_COMMA = r','
-t_LBRACK = r'\['
-t_RBRACK = r'\]'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
+    tokens = ['WORD', 'SINGLE_QUOTE_WORD', 'DOUBLE_QUOTE_WORD', 'DATE', 'FLOAT', 'INT',
+              'COMPARE', 'LBRACK', 'RBRACK', 'COMMA', 'LPAREN', 'RPAREN'] + reserved.values()
 
-
-# dates are in the following format: /mm/dd/yyyy
-def t_DATE(t):
-    r'(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<year>\d{4})'
-    day = int(t.lexer.lexmatch.group('day'))
-    month = int(t.lexer.lexmatch.group('month'))
-    year = int(t.lexer.lexmatch.group('year'))
-    t.value = date(year, month, day)
-    return t
+    t_COMPARE = r'!?=|[<>]=?|~='
+    t_COMMA = r','
+    t_LBRACK = r'\['
+    t_RBRACK = r'\]'
+    t_LPAREN = r'\('
+    t_RPAREN = r'\)'
 
 
-def t_FLOAT(t):
-    r'[-+]?\d+\.(\d+)?([eE][-+]?\d+)?'
-    t.value = float(t.value)
-    return t
+    # dates are in the following format: /mm/dd/yyyy
+    def t_DATE(self, t):
+        r'(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<year>\d{4})'
+        day = int(t.lexer.lexmatch.group('day'))
+        month = int(t.lexer.lexmatch.group('month'))
+        year = int(t.lexer.lexmatch.group('year'))
+        t.value = date(year, month, day)
+        return t
 
 
-def t_INT(t):
-    r'[-+]?\d+'
-    t.value = int(t.value)
-    return t
+    def t_FLOAT(self, t):
+        r'[-+]?\d+\.(\d+)?([eE][-+]?\d+)?'
+        t.value = float(t.value)
+        return t
 
 
-def t_SINGLE_QUOTE_WORD(t):
-    r"(')(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\'\" ]*)(')"
-    t.value = t.lexer.lexmatch.group('word')
-    return t
+    def t_INT(self, t):
+        r'[-+]?\d+'
+        t.value = int(t.value)
+        return t
 
 
-def t_DOUBLE_QUOTE_WORD(t):
-    r'(")(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\"\' ]*)(")'
-    t.value = t.lexer.lexmatch.group('word')
-    return t
+    def t_SINGLE_QUOTE_WORD(self, t):
+        r"(')(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\'\" ]*)(')"
+        t.value = t.lexer.lexmatch.group('word')
+        return t
 
 
-def t_WORD(t):
-    r'[a-zA-Z_0-9][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'WORD')  # Check for reserved words
-    return t
+    def t_DOUBLE_QUOTE_WORD(self, t):
+        r'(")(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\"\' ]*)(")'
+        t.value = t.lexer.lexmatch.group('word')
+        return t
 
 
-# A string containing ignored characters (spaces and tabs)
-t_ignore = " \t"
+    def t_WORD(self, t):
+        r'[a-zA-Z_0-9][a-zA-Z_0-9]*'
+        t.type = reserved.get(t.value, 'WORD')  # Check for reserved words
+        return t
 
 
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+    # A string containing ignored characters (spaces and tabs)
+    t_ignore = " \t"
 
 
-def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+    def t_newline(self, t):
+        r'\n+'
+        t.lexer.lineno += len(t.value)
 
 
-# Build the lexer
-adv_search_lex = lex.lex
-#
-# def main(args):
-#     """Main - $<description>$"""
-#     logging.basicConfig(
-#         level=logging.DEBUG, datefmt="%H:%M:%S", stream=sys.stdout,
-#         format="%(asctime)s %(levelname)s [%(filename)s] (%(name)s) %(message)s")
-#
-#     # Test it out
-#     data = '''
-#     (foo='bar\'s' AND x=1) OR (y NOT IN [2, 3, -3.5]) AND datestamp >= 1/25/2018 AND X="THe OTH3R"
-#     '''
-#
-#     lexer.input(data)
-#     while True:
-#         tok = lexer.token()
-#         if not tok:
-#             break
-#         log.info(tok)
-#
-#
-# if __name__ == "__main__":
-#     import argparse
-#     parser = argparse.ArgumentParser(description="$<description>$")
-#     parser.add_argument('-v', dest='verbose', help="How verbose of the output",
-#                         action='append_const', const=1, default=[1, 2, 3])
-#     sys.exit(main(parser.parse_args()))
+    def t_error(self, t):
+        print("Illegal character '%s'" % t.value[0])
+        t.lexer.skip(1)
+
+    # Build the lexer
+    def build(self, **kwargs):
+        self.lexer = lex.lex(module=self, **kwargs)
+
+    # Test it output
+    def test(self, data):
+        self.lexer.input(data)
+        while True:
+            tok = self.lexer.token()
+            if not tok:
+                break
+            print(tok)
+
+
+def main(args):
+    """Main - $<description>$"""
+    logging.basicConfig(
+        level=logging.DEBUG, datefmt="%H:%M:%S", stream=sys.stdout,
+        format="%(asctime)s %(levelname)s [%(filename)s] (%(name)s) %(message)s")
+
+    # Test it out
+    data = '''
+    (foo='bar\'s' AND x=1) OR (y NOT IN [2, 3, -3.5]) AND datestamp >= 1/25/2018 AND X="THe OTH3R"
+    '''
+
+    m = AdvancedSearchLexer()
+    m.build()  # Build the lexer
+    m.test(data)  # Test it
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="$<description>$")
+    parser.add_argument('-v', dest='verbose', help="How verbose of the output",
+                        action='append_const', const=1, default=[1, 2, 3])
+    sys.exit(main(parser.parse_args()))
