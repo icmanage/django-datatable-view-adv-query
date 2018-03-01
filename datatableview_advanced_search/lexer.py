@@ -54,17 +54,17 @@ class AdvancedSearchLexer(object):
         return t
 
     def t_SINGLE_QUOTE_WORD(self, t):
-        r"(')(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\'\" ]*)(')"
+        r"(')(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9:\.\\'\" ]*)(')"
         t.value = t.lexer.lexmatch.group('word')
         return t
 
     def t_DOUBLE_QUOTE_WORD(self, t):
-        r'(")(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9\\"\' ]*)(")'
+        r'(")(?P<word>[a-zA-Z_0-9][a-zA-Z_0-9:\.\\"\' ]*)(")'
         t.value = t.lexer.lexmatch.group('word')
         return t
 
     def t_WORD(self, t):
-        r'[a-zA-Z_][a-zA-Z_0-9]*|\d+[a-zA-Z_]+[a-zA-Z_0-9]*'
+        r'[a-zA-Z_][a-zA-Z_0-9:\.]*|\d+[a-zA-Z_:]+[a-zA-Z_0-9:\.]*'
         # This allows for words beginning with numbers but you must have a letter in there somewhere
         t.type = reserved.get(t.value, 'WORD')  # Check for reserved words
         return t

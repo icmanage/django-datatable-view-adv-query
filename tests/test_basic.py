@@ -66,9 +66,13 @@ class LexerTestSuite(unittest.TestCase):
         lexer = AdvancedSearchLexer()
         self.assertTrue(lexer.test("(ID=94 OR product~=\"1p1\")", print_output=False))
 
-    def test_digits_near_words(self):
+    def test_digits_near_words_two(self):
         lexer = AdvancedSearchLexer()
-        self.assertTrue(lexer.test("(ID=94 OR product~=1p1)", print_output=True))
+        self.assertTrue(lexer.test("(ID=94 OR product~=1p1)", print_output=False))
+
+    def test_digits_near_words_three(self):
+        lexer = AdvancedSearchLexer()
+        self.assertTrue(lexer.test('test_run_iteration~=1p19_2018.02.20_20:41:19', print_output=True))
 
 
 if __name__ == '__main__':
