@@ -89,7 +89,7 @@ class AdvancedSearchLexer(object):
 
 
     def t_error(self, t):
-        print("Illegal character '%s'" % t.value[0])
+        log.error("Illegal character '%s'" % t.value[0])
         t.lexer.skip(1)
 
     # Test it output

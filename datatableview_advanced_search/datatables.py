@@ -93,9 +93,10 @@ class AdvancedSearchDataTable(object):
 
         try:
             query = compiler(search_string, name_map=self.get_table_map())
+            if query is None:
+                raise KeyError("Nothing found")
             log.debug("Search %s >> %s", search_string, query)
         except Exception as err:
-            log.error("Unable to parse: %s", err)
             raise KeyError(err)
         log.debug(type(query))
         return query
