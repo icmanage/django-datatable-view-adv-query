@@ -151,7 +151,7 @@ class AdvancedSearchParser(object):
         if p:
             log.info("Parsing error around token: '%s'" % p.value)
         else:
-            log.info("Parsing error: unexpected end of expression")
+            log.debug("Parsing error: unexpected end of expression")
 
     def parse(self, text):
         return self.parser.parse(text, self.lexer)

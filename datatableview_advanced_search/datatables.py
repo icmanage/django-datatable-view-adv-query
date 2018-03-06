@@ -64,7 +64,7 @@ class AdvancedSearchDataTable(object):
                 if q is not None:
                     log.warning("Type Error: %s", err)
         except KeyError as err:
-            log.info("Falling back to standard search - %s", err)
+            log.debug("Falling back to standard search - %s", err)
             for term in set(split_terms(self.config['search'])):
                 # NOTE: Allow global terms to overwrite identical queries that were single-column
                 searches[term] = self.columns.copy()
@@ -95,9 +95,7 @@ class AdvancedSearchDataTable(object):
             query = compiler(search_string, name_map=self.get_table_map())
             if query is None:
                 raise KeyError("Nothing found")
-            log.debug("Search %s >> %s", search_string, query)
         except Exception as err:
             raise KeyError(err)
-        log.debug(type(query))
         return query
 
