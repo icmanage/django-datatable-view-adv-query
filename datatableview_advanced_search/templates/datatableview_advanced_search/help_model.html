@@ -1,0 +1,43 @@
+<!-- Modal -->
+<div class="modal fade" id="advanced_search_help" tabindex="-1" role="dialog" aria-labelledby="advanced_search_help_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="advanced_search_help_label">Advanced filter options</h4>
+            </div>
+            <div class="modal-body">
+                Logically join operators on row headers for advanced filtering of table data<br>
+
+                Column Names are the column name with spaces replaced with "_" <br>For example: Home Address > home_address
+
+                <br>
+                Operators include
+                <ul>
+                    <li>= exact</li>
+                    <li>~= contains</li>
+                    <li>&gt; greater than</li>
+                    <li>&gt;= greater than or equal</li>
+                    <li>&lt; less than</li>
+                    <li>&lt;= less than or equal</li>
+                </ul>
+                <br>
+
+                Logical Operators include AND, OR, NOT, and IN
+
+                <br>
+
+                <h3>Examples:</h3>
+                <pre>column_a=Foo AND column_b="The bar"</pre>
+                <pre>column_a=Foo OR column_b="The bar"</pre>
+                <pre>column_a=Foo AND (column_b=1 NOT column_c~=bar)</pre>
+                <pre>column_a IN [Foo,"The Bar"] AND NOT columnb="xyz"</pre>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="advanced_search_help_dismiss" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
