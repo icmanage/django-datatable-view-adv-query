@@ -4,8 +4,8 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
-from lexer import AdvancedSearchLexer
-from parser import AdvancedSearchParser
+from .lexer import AdvancedSearchLexer
+from .parser import AdvancedSearchParser
 
 __author__ = 'Steven Klass'
 __version_info__ = (0, 0, 0)

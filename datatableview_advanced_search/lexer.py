@@ -28,7 +28,7 @@ reserved = {
 class AdvancedSearchLexer(object):
 
     tokens = ['WORD', 'SINGLE_QUOTE_WORD', 'DOUBLE_QUOTE_WORD', 'DATE', 'FLOAT', 'INT',
-              'COMPARE', 'LBRACK', 'RBRACK', 'COMMA', 'LPAREN', 'RPAREN'] + reserved.values()
+              'COMPARE', 'LBRACK', 'RBRACK', 'COMMA', 'LPAREN', 'RPAREN'] + list(reserved.values())
 
     t_COMPARE = r'!?=|[<>]=?|~='
     t_COMMA = r','
