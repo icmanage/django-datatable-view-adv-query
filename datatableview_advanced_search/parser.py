@@ -10,7 +10,7 @@ import sys
 
 import operator
 
-from lexer import AdvancedSearchLexer
+from .lexer import AdvancedSearchLexer
 import ply.yacc as yacc
 
 __author__ = 'Steven Klass'
