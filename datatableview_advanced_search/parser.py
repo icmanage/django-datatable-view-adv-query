@@ -11,7 +11,6 @@ import sys
 import operator
 
 from lexer import AdvancedSearchLexer
-import ply.yacc as yacc
 
 __author__ = 'Steven Klass'
 __date__ = '2/28/18 9:20 AM'
@@ -34,6 +33,7 @@ class AdvancedSearchParser(object):
     tokens = AdvancedSearchLexer.tokens
 
     def __init__(self, **kwargs):
+        import ply.yacc as yacc
         self.name_map = kwargs.pop('name_map', {})
         self.lexer = AdvancedSearchLexer(**kwargs).lexer
         self.parser = yacc.yacc(module=self, **kwargs)

@@ -8,7 +8,6 @@ import sys
 import logging
 from datetime import date
 
-import ply.lex as lex
 
 __author__ = 'Steven Klass'
 __date__ = '2/28/18 9:20 AM'
@@ -38,6 +37,7 @@ class AdvancedSearchLexer(object):
     t_RPAREN = r'\)'
 
     def __init__(self, **kwargs):
+        import ply.lex as lex
         self.lexer = lex.lex(module=self, **kwargs)
         self.lexer.linestart = 0
 
