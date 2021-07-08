@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from context import AdvancedSearchParser
-from context import AdvancedSearchLexer
+from .context import AdvancedSearchParser
+from .context import AdvancedSearchLexer
 import unittest
 
 

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """jira_lex.py: Django datatableview_advanced_search"""
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 import sys
 import logging
 from datetime import date
@@ -27,7 +24,7 @@ reserved = {
 class AdvancedSearchLexer(object):
 
     tokens = ['WORD', 'SINGLE_QUOTE_WORD', 'DOUBLE_QUOTE_WORD', 'DATE', 'FLOAT', 'INT',
-              'COMPARE', 'LBRACK', 'RBRACK', 'COMMA', 'LPAREN', 'RPAREN'] + reserved.values()
+              'COMPARE', 'LBRACK', 'RBRACK', 'COMMA', 'LPAREN', 'RPAREN'] + list(reserved.values())
 
     t_COMPARE = r'!?=|[<>]=?|~='
     t_COMMA = r','

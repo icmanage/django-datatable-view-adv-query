@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 """jira_lex.py: Django datatableview_advanced_search"""
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 import logging
 
 import sys
 
 import operator
+from functools import reduce
 
-from lexer import AdvancedSearchLexer
+from .lexer import AdvancedSearchLexer
 
 __author__ = 'Steven Klass'
 __date__ = '2/28/18 9:20 AM'
