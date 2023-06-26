@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 """jira_lex.py: Django datatableview_advanced_search"""
-
-from __future__ import unicode_literals
-from __future__ import print_function
-
+import functools
 import logging
 
 import sys
 
 import operator
 
-from lexer import AdvancedSearchLexer
+from .lexer import AdvancedSearchLexer
 
 __author__ = 'Steven Klass'
 __date__ = '2/28/18 9:20 AM'
@@ -62,7 +59,7 @@ class AdvancedSearchParser(object):
                 query.append(Q(**{str((source)): p[3]}))
 
         if len(query) > 1:
-            p[0] = reduce(operator.or_, query)
+            p[0] = functools.reduce(operator.or_, query)
         else:
             p[0] = query[0]
 
@@ -81,7 +78,7 @@ class AdvancedSearchParser(object):
             query.append(Q(**{str((source)): p[3]}))
 
         if len(query) > 1:
-            p[0] = reduce(operator.or_, query)
+            p[0] = functools.reduce(operator.or_, query)
         else:
             p[0] = query[0]
 

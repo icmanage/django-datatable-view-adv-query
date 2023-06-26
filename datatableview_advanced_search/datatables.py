@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """datatables.py: Django datatableview_advanced_search"""
-
-from __future__ import unicode_literals
-from __future__ import print_function
-
+import functools
 import logging
 
 from django.core.exceptions import FieldError
@@ -81,10 +78,10 @@ class AdvancedSearchDataTable(object):
                 if q is not None:
                     term_queries.append(q)
             if term_queries:
-                table_queries.append(reduce(operator.or_, term_queries))
+                table_queries.append(functools.reduce(operator.or_, term_queries))
 
         if table_queries:
-            q = reduce(operator.and_, table_queries)
+            q = functools.reduce(operator.and_, table_queries)
             queryset = queryset.filter(q)
 
         return queryset.distinct()

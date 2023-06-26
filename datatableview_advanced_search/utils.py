@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """utils.py: Django datatableview_advanced_search"""
 
-from __future__ import unicode_literals
-from __future__ import print_function
 
 import logging
 
