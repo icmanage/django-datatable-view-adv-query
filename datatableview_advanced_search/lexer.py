@@ -108,28 +108,3 @@ class AdvancedSearchLexer(object):
             if print_output:
                 print(tok)
         return True
-
-
-def main(args):
-    """Main - $<description>$"""
-    logging.basicConfig(
-        level=logging.DEBUG,
-        datefmt="%H:%M:%S",
-        stream=sys.stdout,
-        format="%(asctime)s %(levelname)s [%(filename)s] (%(name)s) %(message)s",
-    )
-
-    # Test it out
-    data = """
-    (foo='bar\'s' AND x=1) OR (y NOT IN [2, 3, -3.5]) AND datestamp >= 1/25/2018 AND X="THe OTH3R"
-    """
-
-    m = AdvancedSearchLexer()
-    m.test(data)  # Test it
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="$<description>$")
-    sys.exit(main(parser.parse_args()))
