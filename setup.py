@@ -17,7 +17,7 @@ here = path.abspath(path.dirname(__file__))
 
 __author__ = "Steven Klass"
 __version_info__ = (1, 3, 0)
-__version__ = ".".join(map(str, __version_info__))
+__version__ = "1.3.0"
 __date__ = "3/1/18 9:22 AM"
 __copyright__ = "Copyright 2018 IC Manage. All rights reserved."
 __credits__ = [
@@ -54,7 +54,7 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version=__version__,  # Required
+    version="1.3.0",  # Required
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
