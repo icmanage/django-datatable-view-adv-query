@@ -227,7 +227,7 @@ jobs:
           PYTHONWARNINGS: once::DeprecationWarning
           GITHUB_TOKEN: ${{ secrets.ORGANIZATIONAL_REPO_TOKEN }}
         run: |
-          bumper.py --directory . --exclude=.idea,.github \
+          bumper.py -vvv --directory . --exclude=.idea,.github \
             --version_files datatableview_advanced_search/__init__.py \
             --repo=icmanage/django-datatable-view-adv-query > out.json
           echo "bumped=$(jq '.bumped' out.json)" >> $GITHUB_OUTPUT
