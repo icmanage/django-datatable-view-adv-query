@@ -198,16 +198,7 @@ jobs:
 
       - name: Combine Report Coverage
         run: |
-          coverage combine coverage-*/.coverage
-            coverage report --precision=1 --sort=cover --skip-covered --skip-empty
-          coverage xml
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          directory: .
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
+          coverage report --precision=1 --sort=cover --skip-covered --skip-empty
 
   release:
     name: Release
