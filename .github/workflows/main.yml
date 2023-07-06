@@ -209,7 +209,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
 
-# ryan: wait til later
   release:
     name: Release
     if: ${{ github.event_name != 'schedule' }}
