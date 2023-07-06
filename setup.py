@@ -15,10 +15,18 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-from datatableview_advanced_search import __name__, __version__, __author__
+__author__ = "Steven Klass"
+__version_info__ = (1, 1, 0)
+__version__ = ".".join(map(str, __version_info__))
+__date__ = "3/1/18 9:22 AM"
+__copyright__ = "Copyright 2018 IC Manage. All rights reserved."
+__credits__ = [
+    "Steven Klass",
+]
+__license__ = "See the file LICENSE.txt for licensing information."
 
 base_url = "https://github.com/icmanage/django-datatable-view-adv-query"
-name = __name__
+name = "datatable_advanced_search"
 
 # Get the long description from the README file
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
