@@ -229,7 +229,7 @@ jobs:
         run: |
           bumper.py --directory . --exclude=.idea,.github \
             --version_files datatableview_advanced_search/__init__.py \
-            --repo=pivotal-energy-solutions/django-datatable-view-adv-query > out.json
+            --repo=icmanage/django-datatable-view-adv-query > out.json
           echo "bumped=$(jq '.bumped' out.json)" >> $GITHUB_OUTPUT
           echo "bump_version=$(jq '.bump_version' out.json)" >> $GITHUB_OUTPUT
           echo "bump_sha=$(jq '.bump_sha' out.json)" >> $GITHUB_OUTPUT
