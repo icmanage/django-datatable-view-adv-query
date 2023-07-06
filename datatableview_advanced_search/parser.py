@@ -152,28 +152,29 @@ class AdvancedSearchParser(object):
         return self.parser.parse(text, self.lexer)
 
 
-def main(args):
-    """Main - $<description>$"""
-    logging.basicConfig(
-        level=logging.DEBUG,
-        datefmt="%H:%M:%S",
-        stream=sys.stdout,
-        format="%(asctime)s %(levelname)s [%(filename)s] (%(name)s) %(message)s",
-    )
-
-    # Test it out
-    data = """
-    (foo='bar\'s' AND x=1) OR (ya IN [2, 3, -3.5]) AND datestamp >= 1/25/2018 AND X="THe OTH3R"
-    """
-
-    name_map = {"foo": ["foo__name", "foo__id"]}
-
-    m = AdvancedSearchParser(name_map=name_map)
-    print(m.parse(data))  # Test it
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="$<description>$")
-    sys.exit(main(parser.parse_args()))
+#
+# def main(args):
+#     """Main - $<description>$"""
+#     logging.basicConfig(
+#         level=logging.DEBUG,
+#         datefmt="%H:%M:%S",
+#         stream=sys.stdout,
+#         format="%(asctime)s %(levelname)s [%(filename)s] (%(name)s) %(message)s",
+#     )
+#
+#     # Test it out
+#     data = """
+#     (foo='bar\'s' AND x=1) OR (ya IN [2, 3, -3.5]) AND datestamp >= 1/25/2018 AND X="THe OTH3R"
+#     """
+#
+#     name_map = {"foo": ["foo__name", "foo__id"]}
+#
+#     m = AdvancedSearchParser(name_map=name_map)
+#     print(m.parse(data))  # Test it
+#
+#
+# if __name__ == "__main__":
+#     import argparse
+#
+#     parser = argparse.ArgumentParser(description="$<description>$")
+#     sys.exit(main(parser.parse_args()))
