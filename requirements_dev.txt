@@ -1,3 +1,5 @@
-black
+mysqlclient
+flake8
+coverage
 pre-commit
-bandit
+black
