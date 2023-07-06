@@ -1,0 +1,5 @@
+mysqlclient
+flake8
+coverage
+pre-commit
+black
