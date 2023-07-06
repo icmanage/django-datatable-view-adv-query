@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 from .context import AdvancedSearchParser
 from .context import AdvancedSearchLexer
@@ -7,6 +8,19 @@ import unittest
 
 class ParserTestSuite(unittest.TestCase):
     """Basic test cases."""
+
+    def tearDown(self) -> None:
+        filename = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "datatableview_advanced_search/parsetab.py",
+        )
+        filename2 = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "datatableview_advanced_search/parser.out",
+        )
+        for pathname in [filename2, filename]:
+            if os.path.exists(pathname):
+                os.remove(pathname)
 
     def test_in_numbers(self):
         parser = AdvancedSearchParser()
