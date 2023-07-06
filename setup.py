@@ -16,7 +16,7 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 __author__ = "Steven Klass"
-__version_info__ = (1, 1, 0)
+__version_info__ = (1, 3, 0)
 __version__ = ".".join(map(str, __version_info__))
 __date__ = "3/1/18 9:22 AM"
 __copyright__ = "Copyright 2018 IC Manage. All rights reserved."
