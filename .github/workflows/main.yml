@@ -170,7 +170,7 @@ jobs:
           DB_TYPE: ${{ matrix.db }}
         run: |
           export PYTHONPATH=`pwd`
-          coverage run demo_app/manage.py test --noinput --settings=demo_app.settings_test datatableview
+          coverage run -m unittest tests/test_basic.py
 
       - name: "Upload Coverage Results for PY:${{ matrix.python-version }} DB:${{ matrix.db}} DJ:${{ matrix.django-version }}"
         uses: actions/upload-artifact@v3
@@ -235,8 +235,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATIONAL_REPO_TOKEN }}
         run: |
           bumper.py --directory . --exclude=.idea,.github,demo_app \
-            --version_files datatableview/__init__.py \
-            --repo=pivotal-energy-solutions/django-datatable-view > out.json
+            --version_files datatableview_advanced_search/__init__.py \
+            --repo=pivotal-energy-solutions/django-datatable-view-adv-query > out.json
           echo "bumped=$(jq '.bumped' out.json)" >> $GITHUB_OUTPUT
           echo "bump_version=$(jq '.bump_version' out.json)" >> $GITHUB_OUTPUT
           echo "bump_sha=$(jq '.bump_sha' out.json)" >> $GITHUB_OUTPUT
