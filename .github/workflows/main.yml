@@ -171,6 +171,7 @@ jobs:
         run: |
           export PYTHONPATH=`pwd`
           coverage run -m unittest tests/test_basic.py
+          coverage report --precision=1 --sort=cover --skip-covered --skip-empty
 
       - name: "Upload Coverage Results for PY:${{ matrix.python-version }} DB:${{ matrix.db}} DJ:${{ matrix.django-version }}"
         uses: actions/upload-artifact@v3
