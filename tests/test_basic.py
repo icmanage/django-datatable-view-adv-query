@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 
-from .context import AdvancedSearchParser
-from .context import AdvancedSearchLexer
+from datatableview_advanced_search.lexer import AdvancedSearchLexer
+from datatableview_advanced_search.parser import AdvancedSearchParser
 import unittest
 
 
