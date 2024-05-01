@@ -4,8 +4,6 @@ import os
 from datatableview_advanced_search.lexer import AdvancedSearchLexer
 from datatableview_advanced_search.parser import AdvancedSearchParser
 import unittest
-
-
 class ParserTestSuite(unittest.TestCase):
     """Basic test cases."""
 
