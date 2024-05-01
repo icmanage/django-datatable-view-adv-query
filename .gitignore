@@ -102,3 +102,4 @@ ENV/
 
 parsetab.py
 parser.out
+/.idea/workspace.xml
