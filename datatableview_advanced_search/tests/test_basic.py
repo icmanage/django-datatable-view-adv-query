@@ -4,6 +4,11 @@ import os
 from datatableview_advanced_search.lexer import AdvancedSearchLexer
 from datatableview_advanced_search.parser import AdvancedSearchParser
 import unittest
+from datatableview_advanced_search.datatables import AdvancedSearchDataTable
+from django.db.models import Q
+from datatableview_advanced_search.__init__ import compiler
+
+
 class ParserTestSuite(unittest.TestCase):
     """Basic test cases."""
 
@@ -96,7 +101,66 @@ class LexerTestSuite(unittest.TestCase):
                 "test_run_iteration~=1p19_2018.02.20_20:41:19", print_output=True
             )
         )
+    def test_randLines(self):
+        lexer = AdvancedSearchLexer()
+        comp = compiler()
+
 
 
 if __name__ == "__main__":
+    unittest.main()
+
+class AdvancedSearchDataTableTestSuite(unittest.TestCase):
+    def setUp(self):
+        self.data_table = AdvancedSearchDataTable()
+
+    def test_get_table_map(self):
+        # Test whether get_table_map returns the correct dictionary
+        expected_map = {
+            "column1_name": ["source1", "source2"],
+            "column2_name": ["source3"],
+            # Add more expected mappings here based on your columns and sources
+        }
+        self.assertEqual(self.data_table.get_table_map(), expected_map)
+
+    def test_normalize_config_search(self):
+        # Test whether normalize_config_search returns the correct normalized search string
+        config = {"search": " Test Query "}
+        query_config = {}
+        normalized_search = self.data_table.normalize_config_search(config, query_config)
+        self.assertEqual(normalized_search, "Test Query")
+
+    def test_search(self):
+        # Test the search method with a mock queryset and config
+        # Mock queryset
+        class MockQuerySet:
+            @staticmethod
+            def filter(q):
+                return "Filtered Queryset"
+
+            @staticmethod
+            def distinct():
+                return "Distinct Queryset"
+
+        mock_queryset = MockQuerySet()
+
+        # Mock config
+        config = {
+            "column_searches": {
+                "column1": "search_term1",
+                "column2": "search_term2",
+            },
+            "search": "global_search_term",
+            "search_fields": ["field1", "field2"],
+        }
+
+        self.assertEqual(self.data_table.search(mock_queryset), "Distinct Queryset")
+
+    def test_parse_advanced_search_string(self):
+        # Test whether _parse_advanced_search_string correctly compiles the search string
+        search_string = "Test Query"
+        compiled_query = self.data_table._parse_advanced_search_string(search_string)
+        self.assertIsInstance(compiled_query, Q)
+
+if __name__ == '__main__':
     unittest.main()
