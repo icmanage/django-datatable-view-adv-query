@@ -1,9 +1,9 @@
 [run]
 branch = True
 omit =
-    */test*
+    */migrations/*
+    */test/*
 
 [report]
 fail_under = 69
-omit =
-    */test*
+

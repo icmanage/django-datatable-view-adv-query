@@ -4,6 +4,11 @@ import os
 from datatableview_advanced_search.lexer import AdvancedSearchLexer
 from datatableview_advanced_search.parser import AdvancedSearchParser
 import unittest
+from datatableview_advanced_search.datatables import AdvancedSearchDataTable
+from django.db.models import Q
+from datatableview_advanced_search.__init__ import compiler
+
+
 class ParserTestSuite(unittest.TestCase):
     """Basic test cases."""
 
@@ -73,6 +78,24 @@ class ParserTestSuite(unittest.TestCase):
             "(OR: ('ID__exact', 94), ('product__contains', '1p1'))", "{}".format(q)
         )
 
+class MockToken:
+        def __init__(self, value):
+            self.value = value
+            self.lexer = self
+
+        def __init__(self, value, lexmatch):
+            self.value = value
+            self.lexmatch = lexmatch
+            self.lexer= self
+
+
+class MockLexMatch:
+    def __init__(self, matched_value):
+        self.matched_value = matched_value
+
+    def group(self, group_name):
+        # For simplicity, assuming group_name is not used in this example
+        return self.matched_value if self.matched_value else None
 
 class LexerTestSuite(unittest.TestCase):
     """Basic test cases."""
@@ -98,5 +121,52 @@ class LexerTestSuite(unittest.TestCase):
         )
 
 
+
+    def test_the_int(self):
+        lexer=AdvancedSearchLexer()
+        test_cases = ["123", "+456", "789", "987654321", "-123", "-456"]
+        for test_case in test_cases:
+            token = MockToken(test_case, "word")
+            returned_token = lexer.t_INT(token)
+            self.assertEqual(returned_token.value, int(test_case))
+
+    def test_errors_in_int(self):
+        lexer = AdvancedSearchLexer()
+        test_cases=["abc", "12a", "-+123", "+-456"]
+        for invalid_case in test_cases:
+            token = MockToken(invalid_case, "word")
+            with self.assertRaises(ValueError):
+                lexer.t_INT(token)
+
+    def test_SINGLE_QUOTE_WORD(self):
+        lexer = AdvancedSearchLexer()
+        test_cases = ["'word'", "'some_word'", "'with_123'", "'abc:def'", "'with space'", "'with.dot'",
+                      "'with\\'singlequote'", "'with\"doublequote'"]
+        expected_values = ["word", "some_word", "with_123", "abc:def", "with space", "with.dot", "with'singlequote",
+                           'with"doublequote']
+        counter = 0
+        for test_case in test_cases:
+            token = MockToken(test_case, MockLexMatch(expected_values[counter]))
+            returned_token = lexer.t_SINGLE_QUOTE_WORD(token)
+            self.assertEqual(returned_token.value, expected_values[counter])
+            counter = counter+1
+
+
+    """" def test_t_SINGLE_QUOTE_WORD_invalid(self):
+        # Test invalid single quoted words
+        lexer = AdvancedSearchLexer()
+        invalid_cases = ["''", "' '", "'   '", "'abc: def'", "'abc.def'", "'with$specialchar'", "'with\\\\backslash'",
+                         "'with'extraquote'", "'with\"extraquote'"]
+        for invalid_case in invalid_cases:
+            # Mock a token object with a lexmatch attribute
+            token = MockToken(invalid_case, MockLexMatch(""))
+            with self.assertRaises(ValueError):
+                lexer.t_SINGLE_QUOTE_WORD(token)
+                """
+
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
