@@ -88,7 +88,6 @@ class MockToken:
             self.lexmatch = lexmatch
             self.lexer= self
 
-
 class MockLexMatch:
     def __init__(self, matched_value):
         self.matched_value = matched_value
@@ -135,12 +134,13 @@ class LexerTestSuite(unittest.TestCase):
         test_cases=["abc", "12a", "-+123", "+-456"]
         for invalid_case in test_cases:
             token = MockToken(invalid_case, "word")
-            with self.assertRaises(ValueError):
-                lexer.t_INT(token)
+            self.assertRaises(ValueError, lexer.t_INT, token)
+
 
     def test_SINGLE_QUOTE_WORD(self):
+        #make into dict
         lexer = AdvancedSearchLexer()
-        test_cases = ["'word'", "'some_word'", "'with_123'", "'abc:def'", "'with space'", "'with.dot'",
+        test_cases = ["'word'", "'some_word'", "'with_123'", "'abc:def'", "'with space'", "'with.dec'",
                       "'with\\'singlequote'", "'with\"doublequote'"]
         expected_values = ["word", "some_word", "with_123", "abc:def", "with space", "with.dot", "with'singlequote",
                            'with"doublequote']
@@ -149,11 +149,11 @@ class LexerTestSuite(unittest.TestCase):
             token = MockToken(test_case, MockLexMatch(expected_values[counter]))
             returned_token = lexer.t_SINGLE_QUOTE_WORD(token)
             self.assertEqual(returned_token.value, expected_values[counter])
-            counter = counter+1
+            counter += 1
 
 
     """" def test_t_SINGLE_QUOTE_WORD_invalid(self):
-        # Test invalid single quoted words
+        
         lexer = AdvancedSearchLexer()
         invalid_cases = ["''", "' '", "'   '", "'abc: def'", "'abc.def'", "'with$specialchar'", "'with\\\\backslash'",
                          "'with'extraquote'", "'with\"extraquote'"]
@@ -164,9 +164,5 @@ class LexerTestSuite(unittest.TestCase):
                 lexer.t_SINGLE_QUOTE_WORD(token)
                 """
 
-
-
 if __name__ == "__main__":
     unittest.main()
-
-
