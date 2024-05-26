@@ -54,7 +54,7 @@ class AdvancedSearchLexer(object):
 
     # dates are in the following format: /mm/dd/yyyy
     def t_DATE(self, t):
-        r"(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<year>\d{4})"
+        r"\/(?P<month>\d{1,2})\/(?P<day>\d{1,2})\/(?P<year>\d{4})"
         day = int(t.lexer.lexmatch.group("day"))
         month = int(t.lexer.lexmatch.group("month"))
         year = int(t.lexer.lexmatch.group("year"))

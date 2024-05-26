@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
-
+from datetime import date
 from datatableview_advanced_search.lexer import AdvancedSearchLexer
 from datatableview_advanced_search.parser import AdvancedSearchParser
 import unittest
-from datatableview_advanced_search.datatables import AdvancedSearchDataTable
-from django.db.models import Q
-from datatableview_advanced_search.__init__ import compiler
 
 
 class ParserTestSuite(unittest.TestCase):
@@ -79,14 +76,12 @@ class ParserTestSuite(unittest.TestCase):
         )
 
 class MockToken:
-        def __init__(self, value):
-            self.value = value
-            self.lexer = self
 
         def __init__(self, value, lexmatch):
             self.value = value
             self.lexmatch = lexmatch
-            self.lexer= self
+            self.lexer = self
+            self.lineno = 0
 
 class MockLexMatch:
     def __init__(self, matched_value):
@@ -95,6 +90,13 @@ class MockLexMatch:
     def group(self, group_name):
         # For simplicity, assuming group_name is not used in this example
         return self.matched_value if self.matched_value else None
+
+class MockLog:
+    def __init__(self):
+        self.error_called_with = None
+
+    def error(self, message):
+        self.error_called_with = message
 
 class LexerTestSuite(unittest.TestCase):
     """Basic test cases."""
@@ -119,10 +121,8 @@ class LexerTestSuite(unittest.TestCase):
             )
         )
 
-
-
     def test_the_int(self):
-        lexer=AdvancedSearchLexer()
+        lexer = AdvancedSearchLexer()
         test_cases = ["123", "+456", "789", "987654321", "-123", "-456"]
         for test_case in test_cases:
             token = MockToken(test_case, "word")
@@ -131,38 +131,79 @@ class LexerTestSuite(unittest.TestCase):
 
     def test_errors_in_int(self):
         lexer = AdvancedSearchLexer()
-        test_cases=["abc", "12a", "-+123", "+-456"]
+        test_cases = ["abc", "12a", "-+123", "+-456"]
         for invalid_case in test_cases:
             token = MockToken(invalid_case, "word")
             self.assertRaises(ValueError, lexer.t_INT, token)
 
 
     def test_SINGLE_QUOTE_WORD(self):
-        #make into dict
         lexer = AdvancedSearchLexer()
-        test_cases = ["'word'", "'some_word'", "'with_123'", "'abc:def'", "'with space'", "'with.dec'",
-                      "'with\\'singlequote'", "'with\"doublequote'"]
-        expected_values = ["word", "some_word", "with_123", "abc:def", "with space", "with.dot", "with'singlequote",
-                           'with"doublequote']
-        counter = 0
-        for test_case in test_cases:
-            token = MockToken(test_case, MockLexMatch(expected_values[counter]))
+        test_cases = {
+            "'word'": "word",
+            "'some_word'": "some_word",
+            "'with_123'": "with_123",
+            "'abc:def'": "abc:def",
+            "'with space'": "with space",
+            "'with.dec'": "with.dec",
+            "'with\\'singlequote'": "with'singlequote",
+            "'with\"doublequote'": 'with"doublequote'
+        }
+        for test_case, expected_value in test_cases.items():
+            token = MockToken(test_case, MockLexMatch(expected_value))
             returned_token = lexer.t_SINGLE_QUOTE_WORD(token)
-            self.assertEqual(returned_token.value, expected_values[counter])
-            counter += 1
+            self.assertEqual(returned_token.value, expected_value)
 
-
-    """" def test_t_SINGLE_QUOTE_WORD_invalid(self):
-        
+    def test_iter(self):
         lexer = AdvancedSearchLexer()
-        invalid_cases = ["''", "' '", "'   '", "'abc: def'", "'abc.def'", "'with$specialchar'", "'with\\\\backslash'",
-                         "'with'extraquote'", "'with\"extraquote'"]
-        for invalid_case in invalid_cases:
-            # Mock a token object with a lexmatch attribute
-            token = MockToken(invalid_case, MockLexMatch(""))
-            with self.assertRaises(ValueError):
-                lexer.t_SINGLE_QUOTE_WORD(token)
-                """
+
+        input_string = "input words and 123 numbers 7.45"
+        lexer.lexer.input(input_string)
+        lexer.lexer.token()
+        tokens = lexer.__iter__()
+        for token in tokens:
+            self.assertIsNotNone(token.type)
+            self.assertIsNotNone(token.value)
+
+
+    def test_t_newline(self):
+        lexer = AdvancedSearchLexer()
+        data = '\n'
+        token = MockToken(data,"word")
+        lexer.t_newline(token)  # to trigger the lexer
+        self.assertEqual(token.lexer.lineno, 1)
+
+    def test_errors(self):
+        lexer = AdvancedSearchLexer()
+        lexer.log = MockLog()
+        data = 'a$b'
+        lexer.lexer.input(data)
+
+        # Tokenize 'a' (valid)
+        token = lexer.lexer.token()
+        self.assertEqual(token.type, 'WORD')
+        # Tokenize '$' (invalid, should trigger t_error)
+        token = lexer.lexer.token()
+        # Assert that log.error was called with the correct message
+        self.assertEqual(lexer.log.error_called_with, lexer.t_error(token))
+        self.assertEqual(token.type, 'WORD')
+        self.assertEqual(token.value, 'b')
+
+    def test_date(self):
+        lexer = AdvancedSearchLexer()
+        # trying a date that I know
+        data = "/01/23/2024"
+        lexer.lexer.input(data)
+        token = lexer.lexer.token()
+        self.assertEqual(token.type, 'DATE')
+        self.assertEqual(token.value, date(2024, 1, 23))
+
+    def test_date_invalid(self):
+        lexer = AdvancedSearchLexer()
+        data = "/15/23/2024"  # Invalid month (15)
+        lexer.lexer.input(data)
+        self.assertRaises(ValueError, lexer.lexer.token(), "invalid date")
+
 
 if __name__ == "__main__":
     unittest.main()
