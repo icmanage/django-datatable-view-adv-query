@@ -202,7 +202,7 @@ class LexerTestSuite(unittest.TestCase):
         lexer = AdvancedSearchLexer()
         data = "/15/23/2024"  # Invalid month (15)
         lexer.lexer.input(data)
-        self.assertRaises(ValueError, lexer.lexer.token(), "invalid date")
+        self.assertRaises(ValueError, lexer.lexer.token)
 
 
 if __name__ == "__main__":

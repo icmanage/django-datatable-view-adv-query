@@ -3,6 +3,8 @@ branch = True
 omit =
     */migrations/*
     */test/*
+    .venv/*
+    demo_app/*
 
 [report]
 fail_under = 69
