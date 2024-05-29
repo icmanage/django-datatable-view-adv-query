@@ -103,3 +103,10 @@ ENV/
 parsetab.py
 parser.out
 /.idea/workspace.xml
+/.idea/shelf/Changes.xml
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml
+/.idea/django-datatable-view-adv-query.iml
+/.idea/misc.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/shelf/Changes/shelved.patch
