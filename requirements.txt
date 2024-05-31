@@ -2,3 +2,4 @@ django-datatable-view
 ply
 setuptools-git
 setuptools
+setuptools-git-version
