@@ -34,7 +34,8 @@ classifiers = [
 dependencies = [
     "django-datatable-view",
     "ply",
-    "python-dateutil"
+    "python-dateutil",
+    "bandit"
 ]
 
 [project.optional-dependencies]
@@ -46,6 +47,7 @@ test = [
     "pre-commit",
     "black",
     "bandit"
+
 ]
 
 
