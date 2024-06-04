@@ -55,7 +55,7 @@ Base= "https://github.com/icmanage/django-datatable-view-adv-query"
 
 
 [tool.hatch.version]
-path = "datatableview_advannced_search/__init__.py"
+path = "datatableview_advanced_search/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
