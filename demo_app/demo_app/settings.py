@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import environ
+import logging
+
+env = environ.Env(
+    DEBUG=(bool, False),
+    DEBUG_LEVEL=(int, logging.WARNING),
+    SECRET_KEY=(str, "SECRET_KEY"),
+    MARIADB_DATABASE=(str, "db"),
+    MARIADB_USER =(str,"root"),
+    MARIADB_PASSWORD=(str,"password"),
+    MARIADB_HOST=(str,"127.0.0.1"),
+    MARIADB_PORT=(int, 3306),
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +34,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "4ir34#o9ci$pf(e67^z3m^qw(lk0ayx-d6q-#1j6+39622nmv*"
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
