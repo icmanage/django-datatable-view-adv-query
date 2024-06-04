@@ -7,7 +7,7 @@ https://github.com/pypa/sampleproject
 """
 
 # Always prefer setuptools over distutils
-import setuptools
+
 from setuptools import setup, find_packages
 
 # To use a consistent encoding
