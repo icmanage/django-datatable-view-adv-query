@@ -188,27 +188,6 @@ jobs:
           path: .coverage
           retention-days: 1
 
-  coverage:
-    name: Upload Coverage to Codecov
-    needs: [ tests ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: pip install -q coverage
-
-      - uses: actions/download-artifact@v3
-        with:
-          path: .
-
-      - name: Combine Report Coverage
-        run: |
-          coverage combine coverage-*/.coverage
-          coverage report --precision=1 --sort=cover --skip-covered --skip-empty
 
   release:
     name: Release
