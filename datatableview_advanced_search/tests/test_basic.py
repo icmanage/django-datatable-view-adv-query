@@ -9,7 +9,7 @@ import unittest
 class ParserTestSuite(unittest.TestCase):
     """Basic test cases."""
 
-    def tearDown(self) :
+    def tearDown(self):
         filename = os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
             "datatableview_advanced_search/parsetab.py",
@@ -75,13 +75,14 @@ class ParserTestSuite(unittest.TestCase):
             "(OR: ('ID__exact', 94), ('product__contains', '1p1'))", "{}".format(q)
         )
 
-class MockToken:
 
-        def __init__(self, value, lexmatch):
-            self.value = value
-            self.lexmatch = lexmatch
-            self.lexer = self
-            self.lineno = 0
+class MockToken:
+    def __init__(self, value, lexmatch):
+        self.value = value
+        self.lexmatch = lexmatch
+        self.lexer = self
+        self.lineno = 0
+
 
 class MockLexMatch:
     def __init__(self, matched_value):
@@ -91,12 +92,14 @@ class MockLexMatch:
         # For simplicity, assuming group_name is not used in this example
         return self.matched_value if self.matched_value else None
 
+
 class MockLog:
     def __init__(self):
         self.error_called_with = None
 
     def error(self, message):
         self.error_called_with = message
+
 
 class LexerTestSuite(unittest.TestCase):
     """Basic test cases."""
@@ -136,7 +139,6 @@ class LexerTestSuite(unittest.TestCase):
             token = MockToken(invalid_case, "word")
             self.assertRaises(ValueError, lexer.t_INT, token)
 
-
     def test_SINGLE_QUOTE_WORD(self):
         lexer = AdvancedSearchLexer()
         test_cases = {
@@ -147,7 +149,7 @@ class LexerTestSuite(unittest.TestCase):
             "'with space'": "with space",
             "'with.dec'": "with.dec",
             "'with\\'singlequote'": "with'singlequote",
-            "'with\"doublequote'": 'with"doublequote'
+            "'with\"doublequote'": 'with"doublequote',
         }
         for test_case, expected_value in test_cases.items():
             token = MockToken(test_case, MockLexMatch(expected_value))
@@ -165,29 +167,28 @@ class LexerTestSuite(unittest.TestCase):
             self.assertIsNotNone(token.type)
             self.assertIsNotNone(token.value)
 
-
     def test_t_newline(self):
         lexer = AdvancedSearchLexer()
-        data = '\n'
-        token = MockToken(data,"word")
+        data = "\n"
+        token = MockToken(data, "word")
         lexer.t_newline(token)  # to trigger the lexer
         self.assertEqual(token.lexer.lineno, 1)
 
     def test_errors(self):
         lexer = AdvancedSearchLexer()
         lexer.log = MockLog()
-        data = 'a$b'
+        data = "a$b"
         lexer.lexer.input(data)
 
         # Tokenize 'a' (valid)
         token = lexer.lexer.token()
-        self.assertEqual(token.type, 'WORD')
+        self.assertEqual(token.type, "WORD")
         # Tokenize '$' (invalid, should trigger t_error)
         token = lexer.lexer.token()
         # Assert that log.error was called with the correct message
         self.assertEqual(lexer.log.error_called_with, lexer.t_error(token))
-        self.assertEqual(token.type, 'WORD')
-        self.assertEqual(token.value, 'b')
+        self.assertEqual(token.type, "WORD")
+        self.assertEqual(token.value, "b")
 
     def test_date(self):
         lexer = AdvancedSearchLexer()
@@ -195,7 +196,7 @@ class LexerTestSuite(unittest.TestCase):
         data = "/01/23/2024"
         lexer.lexer.input(data)
         token = lexer.lexer.token()
-        self.assertEqual(token.type, 'DATE')
+        self.assertEqual(token.type, "DATE")
         self.assertEqual(token.value, date(2024, 1, 23))
 
     def test_date_invalid(self):
