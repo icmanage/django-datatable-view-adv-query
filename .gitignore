@@ -100,7 +100,6 @@ ENV/
 # mypy
 .mypy_cache/
 
-parsetab.py
 parser.out
 /.idea/workspace.xml
 /.idea/shelf/Changes.xml
