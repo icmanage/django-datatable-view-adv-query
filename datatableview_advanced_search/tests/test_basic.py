@@ -37,9 +37,7 @@ class ParserTestSuite(unittest.TestCase):
         name_map = {"ab": ["a__name", "b__name"]}
         parser = AdvancedSearchParser(name_map=name_map)
         q = parser.parse("ab = 2.3")
-        self.assertEqual(
-            "(OR: ('a__name__exact', 2.3), ('b__name__exact', 2.3))", "{}".format(q)
-        )
+        self.assertEqual("(OR: ('a__name__exact', 2.3), ('b__name__exact', 2.3))", "{}".format(q))
 
     def test_map_file_field_not_found(self):
         name_map = {"ab": ["a__name", "b__name"]}
@@ -71,9 +69,7 @@ class ParserTestSuite(unittest.TestCase):
     def test_digits_near_words(self):
         parser = AdvancedSearchParser()
         q = parser.parse('(ID=94 OR product~="1p1")')
-        self.assertEqual(
-            "(OR: ('ID__exact', 94), ('product__contains', '1p1'))", "{}".format(q)
-        )
+        self.assertEqual("(OR: ('ID__exact', 94), ('product__contains', '1p1'))", "{}".format(q))
 
 
 class MockToken:
@@ -119,9 +115,7 @@ class LexerTestSuite(unittest.TestCase):
     def test_digits_near_words_three(self):
         lexer = AdvancedSearchLexer()
         self.assertTrue(
-            lexer.test(
-                "test_run_iteration~=1p19_2018.02.20_20:41:19", print_output=True
-            )
+            lexer.test("test_run_iteration~=1p19_2018.02.20_20:41:19", print_output=True)
         )
 
     def test_the_int(self):

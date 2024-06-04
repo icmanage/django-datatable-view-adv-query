@@ -46,9 +46,7 @@ class AdvancedSearchParser(object):
         """expression : variable COMPARE value"""
 
         allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ "
-        field = "".join(
-            [x.lower() if x != " " else "_" for x in p[1].lower() if x in allowed]
-        )
+        field = "".join([x.lower() if x != " " else "_" for x in p[1].lower() if x in allowed])
         sources = self.name_map.get(field, [p[1]])
         if not isinstance(sources, list):
             sources = [sources]
@@ -72,9 +70,7 @@ class AdvancedSearchParser(object):
         from django.db.models import Q
 
         allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ "
-        field = "".join(
-            [x.lower() if x != " " else "_" for x in p[1].lower() if x in allowed]
-        )
+        field = "".join([x.lower() if x != " " else "_" for x in p[1].lower() if x in allowed])
         sources = self.name_map.get(field, [p[1]])
         if not isinstance(sources, list):
             sources = [sources]
