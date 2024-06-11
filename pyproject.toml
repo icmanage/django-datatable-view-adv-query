@@ -35,7 +35,8 @@ dependencies = [
     "django-datatable-view",
     "ply",
     "python-dateutil",
-    "bandit"
+    "bandit",
+
 ]
 
 [project.optional-dependencies]
@@ -61,16 +62,16 @@ path = "datatableview_advanced_search/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/datatableview",
-    "/datatableview/static/**/*",
-    "/datatableview/templates/**/*",
+    "/datatableview_advanced_search",
+    "/datatableview_advanced_search/static/**/*",
+    "/datatableview_advanced_search/templates/**/*",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ['datatableview']
+packages = ['datatableview_advanced_search']
 include = [
-    "/datatableview/static/**/*",
-    "/datatableview/templates/**/*",
+    "/datatableview_advanced_search/static/**/*",
+    "/datatablevdatatableview_advanced_searchiew/templates/**/*",
 ]
 
 [tool.black]
@@ -90,13 +91,13 @@ exclude = '''
 '''
 
 [tool.bandit]
-targets = ['datatableview', "demo_app"]
-exclude_dirs = ["datatableview/tests"]
+targets = ['datatableview_advanced_search', "demo_app"]
+exclude_dirs = ["datatableview_advanced_search/tests"]
 skips = ["B303", "B308", "B323", "B324", "B703"]
 
 [tool.coverage.run]
 branch = true
-command_line = "demo_app/manage.py test --noinput --settings=demo_app.settings_test datatableview"
+command_line = "./demo_app/manage.py test datatableview_advanced_search.tests"
 omit = [
     "*/demo_app/**",
     "*/migrations/*",
@@ -113,6 +114,6 @@ sort = "cover"
 
 [tool.bumper]
 exclude = [".idea", ".github", "demo_app"]
-version_files = ["datatableview/__init__.py"]
-repo = "pivotal-energy-solutions/django-datatable-view"
+version_files = ["datatableview_advanced_search/__init__.py"]
+repo = "pivotal-energy-solutions/datatableview-advanced-search"
 report = "out.json"

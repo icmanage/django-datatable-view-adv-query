@@ -3,10 +3,10 @@ import os
 from datetime import date
 from datatableview_advanced_search.lexer import AdvancedSearchLexer
 from datatableview_advanced_search.parser import AdvancedSearchParser
-import unittest
+from django.test import TestCase
 
 
-class ParserTestSuite(unittest.TestCase):
+class ParserTestSuite(TestCase):
     """Basic test cases."""
 
     def tearDown(self):
@@ -97,7 +97,7 @@ class MockLog:
         self.error_called_with = message
 
 
-class LexerTestSuite(unittest.TestCase):
+class LexerTestSuite(TestCase):
     """Basic test cases."""
 
     def test_in_numbers(self):
@@ -199,6 +199,3 @@ class LexerTestSuite(unittest.TestCase):
         lexer.lexer.input(data)
         self.assertRaises(ValueError, lexer.lexer.token)
 
-
-if __name__ == "__main__":
-    unittest.main()
