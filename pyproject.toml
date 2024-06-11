@@ -93,7 +93,7 @@ exclude = '''
 [tool.bandit]
 targets = ['datatableview_advanced_search', "demo_app"]
 exclude_dirs = ["datatableview_advanced_search/tests"]
-skips = ["B303", "B308", "B323", "B324", "B703"]
+skips = ["B101"]
 
 [tool.coverage.run]
 branch = true
