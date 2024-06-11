@@ -5,7 +5,7 @@ import sys
 
 if __name__ == "__main__":
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-    assert 'datatableview_advanced_search' in os.listdir(os.path.abspath(sys.path[-1]))
+    assert "datatableview_advanced_search" in os.listdir(os.path.abspath(sys.path[-1]))
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "demo_app.settings")
     try:
         from django.core.management import execute_from_command_line

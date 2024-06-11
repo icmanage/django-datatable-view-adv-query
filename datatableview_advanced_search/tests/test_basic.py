@@ -198,4 +198,3 @@ class LexerTestSuite(TestCase):
         data = "/15/23/2024"  # Invalid month (15)
         lexer.lexer.input(data)
         self.assertRaises(ValueError, lexer.lexer.token)
-
