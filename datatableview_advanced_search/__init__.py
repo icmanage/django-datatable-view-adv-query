@@ -6,8 +6,8 @@ from .lexer import AdvancedSearchLexer
 from .parser import AdvancedSearchParser
 
 __author__ = "Steven Klass"
-__version_info__ = (1, 3, 1)
-__version__ = "1.3.1"
+__version_info__ = (1, 3, 2)
+__version__ = "1.3.2"
 __date__ = "3/1/18 9:22 AM"
 __copyright__ = "Copyright 2018 IC Manage. All rights reserved."
 __credits__ = [
