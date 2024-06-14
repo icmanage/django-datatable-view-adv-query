@@ -27,11 +27,7 @@ class AdvancedSearchDataTable(object):
         allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ "
         for _, column in self.columns.items():
             label = "".join(
-                [
-                    x.lower() if x != " " else "_"
-                    for x in column.label.lower()
-                    if x in allowed
-                ]
+                [x.lower() if x != " " else "_" for x in column.label.lower() if x in allowed]
             )
             data[label] = column.sources
         return data
@@ -74,9 +70,7 @@ class AdvancedSearchDataTable(object):
             for term in set(split_terms(self.config["search"])):
                 # NOTE: Allow global terms to overwrite identical queries that were single-column
                 searches[term] = self.columns.copy()
-                searches[term].update(
-                    {None: column for column in self.config["search_fields"]}
-                )
+                searches[term].update({None: column for column in self.config["search_fields"]})
 
         for term in searches.keys():
             term_queries = []
